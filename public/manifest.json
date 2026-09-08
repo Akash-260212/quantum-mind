@@ -1,0 +1,17 @@
+{
+  "name": "Quantum Mind Studio",
+  "short_name": "QuantumMind",
+  "description": "Adaptive In-Browser Quantum Computing & Algorithm Learning Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f62fe",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
