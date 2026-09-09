@@ -58,66 +58,71 @@ export const CircuitToolbar: React.FC<CircuitToolbarProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-sm text-xs">
-        {/* Left Group: Dimensions & Presets */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Qubits Counter */}
-          <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 gap-1">
-            <span className="font-mono text-slate-700 font-medium">Qubits: {numQubits}</span>
-            <div className="flex items-center ml-1 border-l border-slate-300 pl-1">
-              <button
-                onClick={() => { sounds.playClick(); onRemoveQubit(); }}
-                disabled={numQubits <= 1}
-                className="p-1 rounded hover:bg-slate-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                title="Remove wire"
-              >
-                <Minus className="w-3 h-3" />
-              </button>
-              <button
-                onClick={() => { sounds.playClick(); onAddQubit(); }}
-                disabled={numQubits >= 5}
-                className="p-1 rounded hover:bg-slate-200 text-[#0f62fe] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                title="Add wire"
-              >
-                <Plus className="w-3 h-3" />
-              </button>
+        {/* Left Group: Dimensions & Presets cleanly separated into distinct boxes */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Distinct Box: Quantum Register (Qubits & Steps) */}
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg shadow-2xs">
+            <span className="text-[11px] uppercase font-mono font-bold text-slate-500 mr-0.5">Register:</span>
+            {/* Qubits Counter */}
+            <div className="flex items-center bg-white border border-slate-200 rounded-md px-2 py-0.5 gap-1.5 shadow-2xs">
+              <span className="font-mono text-slate-800 font-semibold text-xs">q[{numQubits}]</span>
+              <div className="flex items-center border-l border-slate-200 pl-1">
+                <button
+                  onClick={() => { sounds.playClick(); onRemoveQubit(); }}
+                  disabled={numQubits <= 1}
+                  className="p-0.5 rounded hover:bg-slate-100 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  title="Remove wire"
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <button
+                  onClick={() => { sounds.playClick(); onAddQubit(); }}
+                  disabled={numQubits >= 5}
+                  className="p-0.5 rounded hover:bg-slate-100 text-[#0f62fe] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  title="Add wire"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+
+            {/* Steps Counter */}
+            <div className="flex items-center bg-white border border-slate-200 rounded-md px-2 py-0.5 gap-1.5 shadow-2xs">
+              <span className="font-mono text-slate-800 font-semibold text-xs">{numSteps} steps</span>
+              <div className="flex items-center border-l border-slate-200 pl-1">
+                <button
+                  onClick={() => { sounds.playClick(); onRemoveStep(); }}
+                  disabled={numSteps <= 3}
+                  className="p-0.5 rounded hover:bg-slate-100 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  title="Remove step column"
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <button
+                  onClick={() => { sounds.playClick(); onAddStep(); }}
+                  disabled={numSteps >= 10}
+                  className="p-0.5 rounded hover:bg-slate-100 text-[#0f62fe] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  title="Add step column"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Steps Counter */}
-          <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 gap-1">
-            <span className="font-mono text-slate-700 font-medium">Steps: {numSteps}</span>
-            <div className="flex items-center ml-1 border-l border-slate-300 pl-1">
-              <button
-                onClick={() => { sounds.playClick(); onRemoveStep(); }}
-                disabled={numSteps <= 3}
-                className="p-1 rounded hover:bg-slate-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                title="Remove step column"
-              >
-                <Minus className="w-3 h-3" />
-              </button>
-              <button
-                onClick={() => { sounds.playClick(); onAddStep(); }}
-                disabled={numSteps >= 10}
-                className="p-1 rounded hover:bg-slate-200 text-[#0f62fe] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                title="Add step column"
-              >
-                <Plus className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
+          {/* Distinct Box: Circuit Actions */}
+          <div className="flex items-center gap-1.5">
+            {/* Reset / Clear */}
+            <button
+              onClick={() => { sounds.playAlert(); onClearCircuit(); }}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-red-50 hover:text-red-600 border border-slate-200 text-slate-700 transition-colors cursor-pointer"
+              title="Clear all gates"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Reset</span>
+            </button>
 
-          {/* Reset / Clear */}
-          <button
-            onClick={() => { sounds.playAlert(); onClearCircuit(); }}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-red-50 hover:text-red-600 border border-slate-200 text-slate-700 transition-colors cursor-pointer"
-            title="Clear all gates"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Reset</span>
-          </button>
-
-          {/* Algorithm Presets */}
-          <div className="relative">
+            {/* Algorithm Presets */}
             <select
               onChange={(e) => {
                 if (e.target.value) {
@@ -150,20 +155,20 @@ export const CircuitToolbar: React.FC<CircuitToolbarProps> = ({
           </button>
         </div>
 
-        {/* Right Group: Simulation, Step Scrubber, Active Recall */}
+        {/* Right Group: Auto-Simulation Status, Clean Step Scrubber, Active Recall Predict */}
         <div className="flex items-center gap-2">
-          {/* Step Scrubber */}
-          <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-xs gap-1">
+          {/* Step Scrubber (Clean IBM Timeline format) */}
+          <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-xs gap-1.5">
             <button
               onClick={() => { sounds.playClick(); onStepChange(Math.max(0, currentStepIndex - 1)); }}
               disabled={currentStepIndex <= 0}
               className="p-1 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 cursor-pointer"
               title="Previous Step"
             >
-              <SkipBack className="w-3 h-3" />
+              <SkipBack className="w-3.5 h-3.5" />
             </button>
-            <span className="font-mono px-2 text-[#0f62fe] font-bold">
-              t = {currentStepIndex}/{maxStepIndex}
+            <span className="font-mono px-2 text-[#0f62fe] font-bold text-xs">
+              Step {currentStepIndex} of {maxStepIndex}
             </span>
             <button
               onClick={() => { sounds.playClick(); onStepChange(Math.min(maxStepIndex, currentStepIndex + 1)); }}
@@ -171,7 +176,7 @@ export const CircuitToolbar: React.FC<CircuitToolbarProps> = ({
               className="p-1 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 cursor-pointer"
               title="Next Step"
             >
-              <SkipForward className="w-3 h-3" />
+              <SkipForward className="w-3.5 h-3.5" />
             </button>
           </div>
 
@@ -183,28 +188,28 @@ export const CircuitToolbar: React.FC<CircuitToolbarProps> = ({
               title="Copy shareable circuit link for judges or peers"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span>Share Circuit</span>
+              <span className="hidden sm:inline">Share</span>
             </button>
           )}
 
-          {/* Active Recall Predict */}
+          {/* Unique Active Recall Predict Button (Interactive in Composer) */}
           <button
             onClick={() => { sounds.playClick(); onOpenPredictModal(); }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-semibold transition-colors cursor-pointer"
-            title="Predict state amplitudes before simulation"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-xs transition-all cursor-pointer hover:scale-105 active:scale-95"
+            title="Active Recall: Forecast state amplitudes before checking solution"
           >
-            <BrainCircuit className="w-3.5 h-3.5 text-amber-600" />
+            <BrainCircuit className="w-4 h-4 fill-white/20" />
             <span>Predict State</span>
           </button>
 
-          {/* Run Simulation */}
-          <button
-            onClick={() => { sounds.playSimulate(); onRunSimulation(); }}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#0f62fe] hover:bg-[#0353e9] text-white font-medium shadow-sm transition-colors cursor-pointer"
+          {/* Real-time Continuous Simulation Indicator */}
+          <div
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-mono font-semibold"
+            title="Real-time continuous simulation: updates automatically on every gate placement"
           >
-            <Play className="w-3.5 h-3.5 fill-white" />
-            <span>Simulate</span>
-          </button>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Auto-Simulated</span>
+          </div>
 
           {/* Sound Toggle */}
           <button

@@ -190,6 +190,32 @@ export const CircuitCanvas: React.FC<CircuitCanvasProps> = ({
                     <div
                       key={stepIdx}
                       onClick={() => handleCellClick(qubitIdx, stepIdx)}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'copy';
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        const droppedType = e.dataTransfer.getData('text/plain') as GateType;
+                        if (droppedType && GATE_REGISTRY[droppedType]) {
+                          sounds.playGatePlace();
+                          const newGate: CircuitGate = {
+                            id: `gate_${Date.now()}_${Math.random().toString(36).substring(2, 5)}`,
+                            type: droppedType,
+                            qubit: qubitIdx,
+                            step: stepIdx,
+                            angle: GATE_REGISTRY[droppedType]?.hasAngleParam ? selectedAngle : undefined,
+                            controlQubit: droppedType === 'CNOT' || droppedType === 'CZ'
+                              ? (qubitIdx === 0 ? 1 : 0)
+                              : undefined,
+                            targetQubit: droppedType === 'SWAP'
+                              ? (qubitIdx === 0 ? 1 : 0)
+                              : undefined
+                          };
+                          onAddGate(newGate);
+                          setInspectingGate(newGate);
+                        }
+                      }}
                       className="w-20 h-12 flex items-center justify-center relative group cursor-pointer"
                     >
                       {/* Empty Slot Placeholder */}
@@ -212,31 +238,25 @@ export const CircuitCanvas: React.FC<CircuitCanvasProps> = ({
                       {/* Render Placed Gate */}
                       {gate && (
                         <div
-                          className={`relative z-20 min-w-[46px] max-w-[66px] px-1.5 h-10 rounded-lg flex flex-col items-center justify-center font-mono font-bold text-[10px] border shadow-xs transition-transform hover:scale-105 select-none ${
+                          className={`relative z-20 flex items-center justify-center font-mono font-bold select-none transition-transform hover:scale-110 ${
                             isInspected ? 'ring-2 ring-[#0f62fe] ring-offset-2 scale-105' : ''
                           } ${
                             gate.type === 'CNOT'
-                              ? 'bg-[#002d9c] text-white border-[#001d6c]'
-                              : gate.type === 'CZ'
-                              ? 'bg-[#0f62fe] text-white border-[#0043ce]'
+                              ? 'w-7 h-7 rounded-full bg-[#0f62fe] text-white shadow-md border-2 border-white flex items-center justify-center'
                               : gate.type === 'SWAP'
-                              ? 'bg-[#0072c3] text-white border-[#00539a]'
-                              : GATE_REGISTRY[gate.type]?.color || 'bg-blue-600 text-white border-blue-700'
+                              ? 'w-7 h-7 rounded-full bg-[#0072c3] text-white shadow-sm flex items-center justify-center text-sm'
+                              : `min-w-[40px] max-w-[54px] px-2 h-9 rounded-md text-xs border shadow-xs ${
+                                  GATE_REGISTRY[gate.type]?.color || 'bg-blue-600 text-white border-blue-700'
+                                }`
                           }`}
                           title={`${GATE_REGISTRY[gate.type]?.name || gate.type} (Click to inspect / edit)`}
                         >
                           {gate.type === 'CNOT' ? (
-                            <span className="text-[11px] font-bold leading-none flex items-center gap-0.5">
-                              <span className="text-sm">⊕</span>
-                              <span>CNOT</span>
-                            </span>
+                            <span className="text-lg font-bold leading-none select-none text-white">⊕</span>
                           ) : gate.type === 'SWAP' ? (
-                            <span className="text-[11px] font-bold leading-none flex items-center gap-0.5">
-                              <span className="text-sm">✕</span>
-                              <span>SWAP</span>
-                            </span>
+                            <span className="text-xs font-bold leading-none select-none text-white">✕</span>
                           ) : (
-                            <span className="leading-tight text-center tracking-tight truncate max-w-[58px]">
+                            <span className="leading-tight text-center font-bold tracking-tight">
                               {GATE_REGISTRY[gate.type]?.symbol || gate.type}
                             </span>
                           )}

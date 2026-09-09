@@ -108,102 +108,87 @@ export const PredictModal: React.FC<PredictModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-lg bg-[#121726] border border-[#1f293d] rounded-xl p-6 shadow-2xl flex flex-col gap-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg bg-[#161c2e] hover:bg-[#212738] text-slate-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center">
-            <BrainCircuit className="w-4 h-4" />
+          <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center">
+            <BrainCircuit className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">
-              Active Recall Checkpoint
-            </span>
-            <h2 className="text-base font-semibold text-white">Predict-Then-Compare</h2>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                Active Recall Checkpoint
+              </span>
+            </div>
+            <h2 className="text-base font-bold text-slate-900 mt-0.5">Forecast Quantum State</h2>
           </div>
         </div>
 
-        <p className="text-xs text-slate-300 leading-relaxed">
-          Active recall strengthens quantum conceptual understanding. Forecast the probability distribution before running the simulation.
+        <p className="text-xs text-slate-600 leading-relaxed">
+          Before inspecting the simulated vector, predict the measurement probabilities for this circuit state.
         </p>
 
         {!evaluated ? (
           <>
             {/* Basis States Sliders */}
-            <div className="flex flex-col gap-3 max-h-56 overflow-y-auto pr-1">
-              <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>Forecasted Probabilities (%):</span>
-                <button
-                  onClick={handleNormalize}
-                  className="text-cyan-400 hover:text-cyan-300 text-[11px] underline"
-                >
-                  Auto-balance to 100%
-                </button>
-              </div>
-
+            <div className="flex flex-col gap-3 py-1 max-h-56 overflow-y-auto pr-1">
               {Array.from({ length: dim }).map((_, i) => {
                 const bitstring = i.toString(2).padStart(numQubits, '0');
                 const val = predictions[i] || 0;
                 return (
-                  <div key={bitstring} className="flex items-center gap-3 p-2 rounded-xl bg-white/5 border border-white/5">
-                    <span className="font-mono text-cyan-300 font-bold text-xs w-12 text-center bg-cyan-950/40 py-1 rounded">
-                      |{bitstring}⟩
-                    </span>
+                  <div key={bitstring} className="flex flex-col gap-1 p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="flex items-center justify-between text-xs font-mono font-semibold">
+                      <span className="text-[#0f62fe] font-bold">|{bitstring}⟩</span>
+                      <span className="text-slate-800">{val}%</span>
+                    </div>
                     <input
                       type="range"
                       min="0"
                       max="100"
                       value={val}
                       onChange={(e) => handleSliderChange(i, parseInt(e.target.value))}
-                      className="flex-1 accent-amber-400 cursor-pointer"
+                      className="accent-[#0f62fe] cursor-pointer"
                     />
-                    <span className="font-mono text-xs text-white font-bold w-10 text-right">
-                      {val}%
-                    </span>
                   </div>
                 );
               })}
             </div>
 
-            {/* Entanglement Prediction Switch */}
-            {numQubits > 1 && (
-              <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 text-xs">
-                <span className="text-slate-300 font-medium">Will this circuit result in quantum entanglement?</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => { sounds.playClick(); setPredictedEntangled(false); }}
-                    className={`px-3 py-1 rounded-lg font-semibold transition-all ${
-                      !predictedEntangled ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    Separable
-                  </button>
-                  <button
-                    onClick={() => { sounds.playClick(); setPredictedEntangled(true); }}
-                    className={`px-3 py-1 rounded-lg font-semibold transition-all ${
-                      predictedEntangled ? 'bg-purple-600 text-white shadow' : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    Entangled
-                  </button>
-                </div>
-              </div>
-            )}
+            {/* Normalization & Entanglement Options */}
+            <div className="flex items-center justify-between pt-1 text-xs">
+              <button
+                onClick={handleNormalize}
+                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium cursor-pointer border border-slate-200"
+              >
+                Normalize to 100%
+              </button>
+
+              <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 select-none">
+                <input
+                  type="checkbox"
+                  checked={predictedEntangled}
+                  onChange={(e) => setPredictedEntangled(e.target.checked)}
+                  className="rounded text-[#0f62fe] accent-[#0f62fe]"
+                />
+                <span className="font-medium">Is Entangled State</span>
+              </label>
+            </div>
 
             {/* Submit Prediction */}
             <button
               onClick={handleEvaluate}
-              className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-bold font-display text-sm shadow-xl shadow-amber-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
             >
-              <span>Submit Prediction & Reveal Quantum State</span>
+              <span>Submit Prediction & Check Accuracy</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </>
@@ -211,18 +196,18 @@ export const PredictModal: React.FC<PredictModalProps> = ({
           /* Evaluation Results View */
           <div className="flex flex-col gap-4 animate-fadeIn">
             {/* Score Banner */}
-            <div className={`p-4 rounded-2xl border flex items-center gap-4 ${
+            <div className={`p-4 rounded-xl border flex items-center gap-4 ${
               score >= 80
-                ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-200'
-                : 'bg-amber-950/50 border-amber-500/40 text-amber-200'
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                : 'bg-amber-50 border-amber-200 text-amber-900'
             }`}>
-              <div className="p-3 rounded-xl bg-black/40">
-                <Trophy className={`w-8 h-8 ${score >= 80 ? 'text-emerald-400' : 'text-amber-400'}`} />
+              <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+                <Trophy className={`w-7 h-7 ${score >= 80 ? 'text-emerald-600' : 'text-amber-600'}`} />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <span className="text-xs uppercase tracking-wider font-mono font-bold">Accuracy Score</span>
-                  <span className="text-2xl font-black font-display">{score}%</span>
+                  <span className="text-2xl font-bold font-mono">{score}%</span>
                 </div>
                 <p className="text-xs mt-1 leading-snug">{feedback}</p>
               </div>
@@ -230,7 +215,7 @@ export const PredictModal: React.FC<PredictModalProps> = ({
 
             {/* Side-by-side comparison */}
             <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
-              <span className="text-xs text-slate-400 font-semibold">Prediction vs. Quantum Reality:</span>
+              <span className="text-xs text-slate-600 font-semibold">Prediction vs. Quantum Reality:</span>
               {Array.from({ length: dim }).map((_, i) => {
                 const bitstring = i.toString(2).padStart(numQubits, '0');
                 const predProb = Math.round((predictions[i] || 0));
@@ -238,15 +223,15 @@ export const PredictModal: React.FC<PredictModalProps> = ({
                 const isMatch = Math.abs(predProb - actProb) <= 15;
 
                 return (
-                  <div key={bitstring} className="flex items-center justify-between p-2 rounded-lg bg-white/5 text-xs font-mono">
-                    <span className="text-cyan-300 font-bold">|{bitstring}⟩</span>
+                  <div key={bitstring} className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-mono">
+                    <span className="text-[#0f62fe] font-bold">|{bitstring}⟩</span>
                     <div className="flex items-center gap-4">
-                      <span className="text-slate-400">Predicted: {predProb}%</span>
-                      <span className="text-white font-bold">Actual: {actProb}%</span>
+                      <span className="text-slate-500">Predicted: {predProb}%</span>
+                      <span className="text-slate-900 font-bold">Actual: {actProb}%</span>
                       {isMatch ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                       ) : (
-                        <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                        <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
                       )}
                     </div>
                   </div>
@@ -257,7 +242,7 @@ export const PredictModal: React.FC<PredictModalProps> = ({
             {/* Close & Continue */}
             <button
               onClick={onClose}
-              className="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs transition-all"
+              className="w-full py-2.5 rounded-xl bg-[#0f62fe] hover:bg-[#0353e9] text-white font-bold text-xs transition-colors cursor-pointer"
             >
               Continue to Circuit Studio
             </button>

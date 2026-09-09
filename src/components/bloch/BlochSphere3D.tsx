@@ -294,10 +294,10 @@ export const BlochSphere3D: React.FC<BlochSphere3DProps> = ({
         </div>
       </div>
 
-      {/* Qubit Wire Switcher & In-View Add/Remove Controls */}
+      {/* Qubit Wire Switcher */}
       <div className="flex flex-wrap items-center justify-between gap-3 py-2.5 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-600 font-medium font-mono">Select Wire:</span>
+          <span className="text-xs text-slate-700 font-semibold font-mono">Select Wire:</span>
           {Array.from({ length: numQubits }).map((_, idx) => (
             <button
               key={idx}
@@ -317,90 +317,21 @@ export const BlochSphere3D: React.FC<BlochSphere3DProps> = ({
           ))}
         </div>
 
-        {/* Add/Remove Qubits options directly in Bloch View! */}
-        <div className="flex items-center gap-1.5 text-xs">
-          {onRemoveQubit && (
-            <button
-              onClick={() => { sounds.playClick(); onRemoveQubit(); }}
-              disabled={numQubits <= 1}
-              className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-              title="Remove Wire"
-            >
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-          )}
-          <span className="text-[11px] font-mono text-slate-500 font-semibold">Total: {numQubits} Qubits</span>
-          {onAddQubit && (
-            <button
-              onClick={() => { sounds.playClick(); onAddQubit(); }}
-              disabled={numQubits >= 5}
-              className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-[#0f62fe] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-              title="Add Wire"
-            >
-              <Plus className="w-3.5 h-3.5" />
-            </button>
-          )}
-
-          {isManualOverride && (
-            <button
-              onClick={() => {
-                sounds.playClick();
-                setIsManualOverride(false);
-              }}
-              className="ml-2 text-xs px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 hover:bg-amber-200 font-medium cursor-pointer"
-            >
-              Reset to Circuit
-            </button>
-          )}
-        </div>
+        {isManualOverride && (
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setIsManualOverride(false);
+            }}
+            className="text-xs px-2.5 py-1 rounded bg-amber-100 text-amber-900 hover:bg-amber-200 font-semibold cursor-pointer"
+          >
+            Reset to Circuit State
+          </button>
+        )}
       </div>
 
-      {/* 1-CLICK GATE APPLICATOR: Directly apply gates to this qubit */}
-      {onApplyGateDirect && (
-        <div className="flex flex-wrap items-center gap-2 py-2 text-xs">
-          <span className="font-mono text-slate-500 text-[11px] font-semibold flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5 text-[#0f62fe]" /> Apply to q[{selectedQubit}]:
-          </span>
-          <button
-            onClick={() => onApplyGateDirect('H')}
-            className="px-2.5 py-1 rounded font-bold text-xs bg-[#007d79] text-white hover:brightness-110 cursor-pointer"
-            title="Apply Hadamard"
-          >
-            Hadamard (H)
-          </button>
-          <button
-            onClick={() => onApplyGateDirect('X')}
-            className="px-2.5 py-1 rounded font-bold text-xs bg-[#da1e28] text-white hover:brightness-110 cursor-pointer"
-            title="Apply Pauli-X (NOT)"
-          >
-            NOT (X)
-          </button>
-          <button
-            onClick={() => onApplyGateDirect('Z')}
-            className="px-2.5 py-1 rounded font-bold text-xs bg-[#0f62fe] text-white hover:brightness-110 cursor-pointer"
-            title="Apply Pauli-Z (Phase)"
-          >
-            Phase (Z)
-          </button>
-          <button
-            onClick={() => onApplyGateDirect('S')}
-            className="px-2.5 py-1 rounded font-bold text-xs bg-[#6929c4] text-white hover:brightness-110 cursor-pointer"
-            title="Apply S Gate"
-          >
-            S-Phase
-          </button>
-          <button
-            onClick={() => onApplyGateDirect('RESET')}
-            className="px-2.5 py-1 rounded font-bold text-xs bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer ml-auto flex items-center gap-1"
-            title="Reset to Ground State |0⟩"
-          >
-            <RotateCcw className="w-3 h-3" /> Reset |0⟩
-          </button>
-        </div>
-      )}
-
       {/* 3D WebGL Canvas Container */}
-      <div className="relative flex-1 min-h-[280px] w-full rounded-xl overflow-hidden bg-slate-50 border border-slate-200 shadow-inner mt-1">
+      <div className="relative flex-1 min-h-[300px] w-full rounded-xl overflow-hidden bg-slate-50 border border-slate-200 shadow-inner mt-2">
         <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
         {/* State Label Floating Badges */}
@@ -414,8 +345,8 @@ export const BlochSphere3D: React.FC<BlochSphere3DProps> = ({
             |1⟩ South Pole (Z = -1)
           </div>
           <div className="flex items-center gap-1.5 text-red-800 bg-white/90 px-2 py-0.5 rounded shadow-xs border border-red-200">
-            <span className="w-2 h-2 rounded-full bg-[#da1e28]"></span>
-            |+⟩ Equatorial (+X)
+            <span className="w-2 h-2 rounded-full bg-[#fa4d56]"></span>
+            |+⟩ Superposition (+X)
           </div>
         </div>
 
@@ -424,7 +355,7 @@ export const BlochSphere3D: React.FC<BlochSphere3DProps> = ({
           <div className="absolute bottom-2 left-2 right-2 flex items-center gap-2 p-2.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-xs shadow-xs">
             <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
             <span>
-              <strong>Mixed State (Entangled):</strong> Subsystem vector is contracted inside the sphere. Wire q[{selectedQubit}] is entangled with other qubits!
+              <strong>Entangled State:</strong> Wire q[{selectedQubit}] is non-locally entangled with other qubits (state vector contracted).
             </span>
           </div>
         )}

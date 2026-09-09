@@ -7,74 +7,74 @@ export const GATE_REGISTRY: Record<GateType, GateInfo> = {
   H: {
     type: 'H',
     name: 'Hadamard',
-    symbol: 'Hadamard',
+    symbol: 'H',
     category: 'superposition',
     description: 'Creates equal superposition: turns definite states |0⟩ or |1⟩ into an equal 50/50 probability mixture (|0⟩±|1⟩)/√2.',
     matrixLatex: '1/√2 [[1, 1], [1, -1]]',
     numQubits: 1,
-    color: 'bg-[#007d79] text-white border-[#005d5d]',
-    borderColor: 'border-[#005d5d]',
-    glowColor: 'rgba(0, 125, 121, 0.2)'
+    color: 'bg-[#fa4d56] text-white border-[#da1e28]',
+    borderColor: 'border-[#da1e28]',
+    glowColor: 'rgba(250, 77, 86, 0.25)'
   },
   X: {
     type: 'X',
     name: 'Pauli-X (NOT)',
-    symbol: 'NOT (X)',
+    symbol: 'X',
     category: 'pauli',
     description: 'Quantum bit-flip: inverts |0⟩ to |1⟩ and |1⟩ to |0⟩. Rotates the statevector by 180° around the X-axis.',
     matrixLatex: '[[0, 1], [1, 0]]',
     numQubits: 1,
-    color: 'bg-[#da1e28] text-white border-[#ba1b23]',
-    borderColor: 'border-[#ba1b23]',
-    glowColor: 'rgba(218, 30, 40, 0.2)'
+    color: 'bg-[#0072c3] text-white border-[#00539a]',
+    borderColor: 'border-[#00539a]',
+    glowColor: 'rgba(0, 114, 195, 0.25)'
   },
   Y: {
     type: 'Y',
     name: 'Pauli-Y',
-    symbol: 'Pauli-Y',
+    symbol: 'Y',
     category: 'pauli',
     description: 'Combined bit and phase flip: maps |0⟩ → i|1⟩ and |1⟩ → -i|0⟩. Rotates 180° around the Y-axis.',
     matrixLatex: '[[0, -i], [i, 0]]',
     numQubits: 1,
-    color: 'bg-[#8a3ffc] text-white border-[#6929c4]',
-    borderColor: 'border-[#6929c4]',
-    glowColor: 'rgba(138, 63, 252, 0.2)'
+    color: 'bg-[#ee5396] text-white border-[#d12771]',
+    borderColor: 'border-[#d12771]',
+    glowColor: 'rgba(238, 83, 150, 0.25)'
   },
   Z: {
     type: 'Z',
     name: 'Pauli-Z',
-    symbol: 'Phase (Z)',
+    symbol: 'Z',
     category: 'pauli',
     description: 'Phase-flip: leaves |0⟩ untouched and multiplies |1⟩ by -1. Inverts the relative phase |+⟩ ↔ |-⟩.',
     matrixLatex: '[[1, 0], [0, -1]]',
     numQubits: 1,
-    color: 'bg-[#0f62fe] text-white border-[#0043ce]',
-    borderColor: 'border-[#0043ce]',
-    glowColor: 'rgba(15, 98, 254, 0.2)'
+    color: 'bg-[#1192e8] text-white border-[#0072c3]',
+    borderColor: 'border-[#0072c3]',
+    glowColor: 'rgba(17, 146, 232, 0.25)'
   },
   S: {
     type: 'S',
     name: 'Phase Gate (S)',
-    symbol: 'S-Phase',
+    symbol: 'S',
     category: 'phase',
     description: 'Quarter-turn phase shift: applies a 90° (π/2) relative phase to |1⟩. Two S gates equal a Z gate (SS = Z).',
     matrixLatex: '[[1, 0], [0, i]]',
     numQubits: 1,
-    color: 'bg-[#6929c4] text-white border-[#491d8b]',
-    borderColor: 'border-[#491d8b]',
-    glowColor: 'rgba(105, 41, 196, 0.2)'
+    color: 'bg-[#08bdba] text-white border-[#009d9a]',
+    borderColor: 'border-[#009d9a]',
+    glowColor: 'rgba(8, 189, 186, 0.25)'
   },
   T: {
     type: 'T',
     name: 'T-Gate (π/8)',
-    symbol: 'T-Gate',
+    symbol: 'T',
     category: 'phase',
     description: 'Eighth-turn phase shift: applies a 45° (π/4) phase to |1⟩. Essential for universal quantum fault tolerance.',
     matrixLatex: '[[1, 0], [0, e^(iπ/4)]]',
     numQubits: 1,
-    color: 'bg-[#491d8b] text-white border-[#31135e]',
-    borderColor: 'border-[#31135e]',
-    glowColor: 'rgba(73, 29, 139, 0.2)'
+    color: 'bg-[#6929c4] text-white border-[#491d8b]',
+    borderColor: 'border-[#491d8b]',
+    glowColor: 'rgba(105, 41, 196, 0.25)'
   },
   RX: {
     type: 'RX',

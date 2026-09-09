@@ -58,12 +58,12 @@ export const GatePalette: React.FC<GatePaletteProps> = ({
             <MousePointerClick className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 font-mono">
-              Step 1: Choose a Quantum Gate
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono flex items-center gap-2">
+              <span>Operations & Gate Library</span>
+              <span className="text-[10px] font-normal text-slate-500 lowercase">
+                (click gate to select, then click wire to place)
+              </span>
             </h3>
-            <p className="text-[11px] text-slate-500">
-              Click any gate below, then click any slot on the wire grid to place it.
-            </p>
           </div>
         </div>
 
@@ -98,15 +98,21 @@ export const GatePalette: React.FC<GatePaletteProps> = ({
                 return (
                   <button
                     key={type}
+                    draggable
+                    onDragStart={(e) => {
+                      sounds.playClick();
+                      e.dataTransfer.setData('text/plain', type);
+                      e.dataTransfer.effectAllowed = 'copy';
+                    }}
                     onClick={() => handleGateClick(type)}
                     onMouseEnter={() => setHoveredGateInfo(gate)}
                     onMouseLeave={() => setHoveredGateInfo(null)}
-                    className={`h-10 min-w-[42px] px-2.5 rounded-lg flex items-center justify-center font-mono font-bold text-xs border shadow-sm transition-all cursor-pointer ${
+                    className={`h-10 min-w-[42px] px-2.5 rounded-lg flex items-center justify-center font-mono font-bold text-xs border shadow-sm transition-all cursor-grab active:cursor-grabbing ${
                       isSelected
                         ? 'ring-2 ring-[#0f62fe] ring-offset-2 scale-105 shadow-md brightness-110'
                         : `${gate.color} hover:brightness-110 hover:-translate-y-0.5`
                     }`}
-                    title={`${gate.name}: ${gate.description}`}
+                    title={`${gate.name}: ${gate.description} (Click or Drag onto wire)`}
                   >
                     {gate.symbol}
                   </button>

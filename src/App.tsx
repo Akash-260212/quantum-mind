@@ -425,30 +425,29 @@ export function App() {
               onShareCircuit={handleShareCircuit}
             />
 
-            {/* LIVE STEP EXPLANATION BANNER: Explains what and why is happening */}
-            <div className="flex items-center justify-between p-3.5 bg-blue-50 border border-blue-200 rounded-xl text-xs shadow-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="p-1 rounded bg-blue-100 text-[#0f62fe]">
-                  <Info className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-slate-900 font-mono">
-                    Step {currentStepIndex}:{' '}
+            {/* CLEAN STATEVECTOR & PHASE BANNER (IBM Style) */}
+            <div className="flex items-center justify-between px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs shadow-2xs">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-slate-500 font-bold text-[11px] uppercase">Statevector |ψ⟩:</span>
+                <span className="font-mono font-bold text-[#0f62fe] text-xs bg-white px-2 py-0.5 rounded border border-blue-200">
+                  {currentState.diracRepresentation}
+                </span>
+                {stepGate && (
+                  <span className="text-[11px] text-slate-500 hidden sm:inline">
+                    (via {GATE_REGISTRY[stepGate.type]?.name || stepGate.type} on q[{stepGate.qubit}])
                   </span>
-                  <span className="text-slate-700">
-                    {stepGate
-                      ? `${GATE_REGISTRY[stepGate.type]?.name} applied on Wire q[${stepGate.qubit}]. State mapped to: `
-                      : currentStepIndex === 0
-                      ? 'Circuit initial ground state |0...0⟩. '
-                      : 'Identity operator preserved. State is: '}
-                    <strong className="font-mono text-[#0f62fe] ml-1">{currentState.diracRepresentation}</strong>
-                  </span>
-                </div>
+                )}
               </div>
 
-              <span className="text-[11px] text-slate-500 font-mono hidden sm:inline">
-                {currentState.isEntangled ? '⚡ Non-Local Entanglement' : 'Product State'}
-              </span>
+              <div className="flex items-center gap-2 font-mono text-[11px]">
+                <span className={`px-2 py-0.5 rounded font-semibold ${
+                  currentState.isEntangled 
+                    ? 'bg-purple-100 text-purple-800 border border-purple-200' 
+                    : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                }`}>
+                  {currentState.isEntangled ? 'Entangled State' : 'Separable (Pure)'}
+                </span>
+              </div>
             </div>
 
             {/* Operations Palette */}
