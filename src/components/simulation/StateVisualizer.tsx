@@ -27,8 +27,8 @@ export const StateVisualizer: React.FC<StateVisualizerProps> = ({
         <div className="flex items-center gap-2">
           <Activity className="w-5 h-5 text-[#0f62fe]" />
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Quantum State Vector</h3>
-            <p className="text-[11px] text-slate-500">Step {currentState.stepIndex} Evolution</p>
+            <h3 className="text-sm font-bold text-slate-900">Output Measurement Probabilities</h3>
+            <p className="text-[11px] text-slate-500">Likelihood of measuring each bitstring outcome (|00⟩, |01⟩, |10⟩, |11⟩)</p>
           </div>
         </div>
 

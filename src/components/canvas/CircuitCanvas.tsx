@@ -15,6 +15,7 @@ interface CircuitCanvasProps {
   onUpdateGate: (gate: CircuitGate) => void;
   currentStepIndex: number;
   onSelectStep: (step: number) => void;
+  onClearCircuit?: () => void;
 }
 
 export const CircuitCanvas: React.FC<CircuitCanvasProps> = ({
@@ -27,7 +28,8 @@ export const CircuitCanvas: React.FC<CircuitCanvasProps> = ({
   onRemoveGate,
   onUpdateGate,
   currentStepIndex,
-  onSelectStep
+  onSelectStep,
+  onClearCircuit
 }) => {
   const [inspectingGate, setInspectingGate] = useState<CircuitGate | null>(null);
 
@@ -71,28 +73,42 @@ export const CircuitCanvas: React.FC<CircuitCanvasProps> = ({
 
   return (
     <div className="relative flex flex-col bg-white border border-slate-200 rounded-xl p-6 shadow-sm select-none overflow-x-auto">
-      {/* Step Header Timeline */}
-      <div className="flex items-center min-w-max pl-24 pr-8 pb-3 border-b border-slate-200">
-        {Array.from({ length: numSteps }).map((_, stepIdx) => (
-          <div
-            key={stepIdx}
-            onClick={() => { sounds.playClick(); onSelectStep(stepIdx + 1); }}
-            className={`w-20 text-center cursor-pointer transition-colors ${
-              currentStepIndex === stepIdx + 1
-                ? 'text-[#0f62fe] font-bold'
-                : 'text-slate-400 hover:text-slate-600 font-medium'
-            }`}
-          >
-            <div className="text-xs font-mono">
-              Step {stepIdx}
-            </div>
+      {/* Circuit Header with Step timeline & fast Reset button right next to circuit building */}
+      <div className="flex items-center justify-between min-w-max pb-3 border-b border-slate-200">
+        <div className="flex items-center pl-24 pr-8">
+          {Array.from({ length: numSteps }).map((_, stepIdx) => (
             <div
-              className={`h-1 rounded-full mx-auto mt-1 transition-all ${
-                currentStepIndex === stepIdx + 1 ? 'w-8 bg-[#0f62fe]' : 'w-2 bg-slate-200'
+              key={stepIdx}
+              onClick={() => { sounds.playClick(); onSelectStep(stepIdx + 1); }}
+              className={`w-20 text-center cursor-pointer transition-colors ${
+                currentStepIndex === stepIdx + 1
+                  ? 'text-[#0f62fe] font-bold'
+                  : 'text-slate-400 hover:text-slate-600 font-medium'
               }`}
-            />
-          </div>
-        ))}
+            >
+              <div className="text-xs font-mono">
+                Step {stepIdx}
+              </div>
+              <div
+                className={`h-1 rounded-full mx-auto mt-1 transition-all ${
+                  currentStepIndex === stepIdx + 1 ? 'w-8 bg-[#0f62fe]' : 'w-2 bg-slate-200'
+                }`}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Fast Reset Button placed right next to circuit building */}
+        {onClearCircuit && (
+          <button
+            onClick={() => { sounds.playAlert(); onClearCircuit(); }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-red-50 hover:text-red-600 border border-slate-300 text-slate-700 text-xs font-semibold transition-colors cursor-pointer ml-4 shadow-2xs"
+            title="Quick Clear Circuit Canvas"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Reset Canvas</span>
+          </button>
+        )}
       </div>
 
       {/* Circuit Grid */}

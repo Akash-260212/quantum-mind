@@ -460,7 +460,7 @@ export function App() {
               setHoveredGateInfo={setHoveredGateInfo}
             />
 
-            {/* Visual Circuit Canvas with In-place Inspector */}
+            {/* Visual Circuit Canvas with In-place Inspector & Direct Fast Reset */}
             <CircuitCanvas
               numQubits={numQubits}
               numSteps={numSteps}
@@ -472,6 +472,7 @@ export function App() {
               onUpdateGate={handleUpdateGate}
               currentStepIndex={currentStepIndex}
               onSelectStep={setCurrentStepIndex}
+              onClearCircuit={handleClearCircuit}
             />
 
             {/* Bottom 2-Column Split: State Probabilities & Pure State Analysis */}
@@ -493,8 +494,8 @@ export function App() {
                     <div className="flex items-center gap-2">
                       <Atom className="w-5 h-5 text-[#0f62fe]" />
                       <div>
-                        <h3 className="text-sm font-bold text-slate-900">Live State Analysis</h3>
-                        <p className="text-[11px] text-slate-500">Step {currentStepIndex} Quantum State Profile</p>
+                        <h3 className="text-sm font-bold text-slate-900">Quantum State Vector & Dirac Math</h3>
+                        <p className="text-[11px] text-slate-500">Exact complex wave function |ψ⟩ & entanglement status</p>
                       </div>
                     </div>
                     <span className={`text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full border ${
